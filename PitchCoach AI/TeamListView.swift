@@ -13,13 +13,21 @@ struct TeamListView: View {
     @Environment(\.modelContext) private var context
     @State private var isPresentingAddTeam = false
     @State private var newTeam = Team(name: "")
-
+    
     var body: some View {
         NavigationStack {
             List {
                 ForEach(teams) { team in
-                    NavigationLink(team.name) {
+                    NavigationLink {
                         PlayerListView(team: team)
+                    } label: {
+                        Label {
+                            Text(team.name)
+                        } icon: {
+                            Text("\(team.players.count)")
+                                .frame(width: 24)
+                                .background(Circle().fill(Color.blue.opacity(0.2)))
+                        }
                     }
                 }
                 .onDelete(perform: deleteTeams)
@@ -43,7 +51,7 @@ struct TeamListView: View {
             }
         }
     }
-
+    
     private func deleteTeams(at offsets: IndexSet) {
         for index in offsets {
             let teamToDelete = teams[index]

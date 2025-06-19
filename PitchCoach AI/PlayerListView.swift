@@ -33,9 +33,9 @@ struct PlayerListView: View {
                             .foregroundColor(.blue)
                     }
                 }
-                .onDelete(perform: deletePlayers)
-                
             }
+            .onDelete(perform: deletePlayers)
+
         }
         .navigationTitle(team.name)
         .toolbar {
@@ -57,14 +57,22 @@ struct PlayerListView: View {
                 }
             }
         }
+        .sheet(item: $selectedPlayer) { playerToShow in
+            PlayerFormView(player: playerToShow)
+        }
         .sheet(isPresented: $isPresentingAddPlayer) {
             if let newPlayer {
-                NavigationStack {
-                    PlayerFormView(player: newPlayer)
-                }
+                PlayerFormView(player: newPlayer)
             }
         }
         
+    }
+    
+    private func deletePlayers(at offsets: IndexSet) {
+        for index in offsets {
+            let playerToDelete = team.players[index]
+            context.delete(playerToDelete)
+        }
     }
 }
 
