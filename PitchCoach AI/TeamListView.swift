@@ -11,7 +11,8 @@ import SwiftData
 struct TeamListView: View {
     @Query private var teams: [Team]
     @Environment(\.modelContext) private var context
-    @State private var newTeamName = ""
+    @State private var isPresentingAddTeam = false
+    @State private var newTeam = Team(name: "")
 
     var body: some View {
         NavigationStack {
@@ -21,16 +22,32 @@ struct TeamListView: View {
                         PlayerListView(team: team)
                     }
                 }
+                .onDelete(perform: deleteTeams)
             }
             .navigationTitle("Teams")
             .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button("Add Team") {
-                        let team = Team(name: "New Team")
-                        context.insert(team)
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        newTeam = Team(name: "")
+                        context.insert(newTeam)
+                        isPresentingAddTeam = true
+                    } label: {
+                        Label("Add Team", systemImage: "plus")
                     }
                 }
             }
+            .sheet(isPresented: $isPresentingAddTeam) {
+                NavigationStack {
+                    TeamFormView(team: newTeam)
+                }
+            }
+        }
+    }
+
+    private func deleteTeams(at offsets: IndexSet) {
+        for index in offsets {
+            let teamToDelete = teams[index]
+            context.delete(teamToDelete)
         }
     }
 }

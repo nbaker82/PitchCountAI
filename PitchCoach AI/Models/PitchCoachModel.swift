@@ -17,23 +17,31 @@ class Team {
 @Model
 class Player {
     var id: UUID
-    var name: String
+    var firstName: String
+    var lastName: String
     var age: Int
     var throwingArm: ThrowingArm
     var position: String
+    var pitchTypes: [PitchType] = []
     var team: Team?
     var pitchLogs: [PitchLog] = []
     
+    var name: String {
+        [firstName, lastName].joined(separator: " ")
+    }
+    
     init(
         id: UUID = UUID(),
-        name: String,
+        firstName: String,
+        lastName: String,
         age: Int,
         throwingArm: ThrowingArm,
         position: String,
         team: Team? = nil
     ) {
         self.id = id
-        self.name = name
+        self.firstName = firstName
+        self.lastName = lastName
         self.age = age
         self.throwingArm = throwingArm
         self.position = position
@@ -51,20 +59,17 @@ class PitchLog {
     var id: UUID
     var date: Date
     var totalPitches: Int
-    var pitchTypes: [PitchType]
     var player: Player?
     
     init(
         id: UUID = UUID(),
         date: Date = .now,
         totalPitches: Int,
-        pitchTypes: [PitchType] = [],
         player: Player? = nil
     ) {
         self.id = id
         self.date = date
         self.totalPitches = totalPitches
-        self.pitchTypes = pitchTypes
         self.player = player
     }
 }
