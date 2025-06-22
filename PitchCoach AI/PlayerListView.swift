@@ -20,17 +20,19 @@ struct PlayerListView: View {
                 Button {
                     selectedPlayer = player
                 } label: {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(player.name)
-                                .font(.headline)
-                            Text("Age: \(player.age)")
+                    VStack(alignment: .leading) {
+                        Text("\(player.firstName) \(player.lastName)")
+                            .font(.headline)
+
+                        if let daysLeft = daysUntilReady(for: player), daysLeft > 0 {
+                            Text("🕒 Ready in \(daysLeft) day\(daysLeft > 1 ? "s" : "")")
                                 .font(.subheadline)
-                                .foregroundColor(.secondary)
+                                .foregroundColor(.orange)
+                        } else {
+                            Text("✅ Ready")
+                                .font(.subheadline)
+                                .foregroundColor(.green)
                         }
-                        Spacer()
-                        Image(systemName: "pencil")
-                            .foregroundColor(.blue)
                     }
                 }
             }
@@ -73,6 +75,17 @@ struct PlayerListView: View {
             let playerToDelete = team.players[index]
             context.delete(playerToDelete)
         }
+    }
+    
+    func daysUntilReady(for player: Player, cooldownDays: Int = 4) -> Int? {
+        guard let lastPitchDate = player.pitchLogs.sorted(by: { $0.date > $1.date }).first?.date else {
+            return nil // No pitch logs yet
+        }
+
+        let calendar = Calendar.current
+        let daysSinceLastPitch = calendar.dateComponents([.day], from: lastPitchDate, to: Date()).day ?? 0
+        let remainingDays = cooldownDays - daysSinceLastPitch
+        return max(remainingDays, 0)
     }
 }
 
