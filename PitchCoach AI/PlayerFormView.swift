@@ -70,15 +70,16 @@ struct PlayerFormView: View {
                 Section(header: Text("Last Pitched")) {
                     if let lastLog = player.pitchLogs.sorted(by: { $0.date > $1.date }).first {
                         Text(lastLog.date.formatted(date: .abbreviated, time: .omitted))
+                            .foregroundColor(ColorTheme.textPrimary)
                     } else {
                         Text("No games pitched yet")
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(ColorTheme.textSecondary)
                     }
                 }
                 Section(header: Text("Pitch Count History")) {
                     if player.pitchLogs.isEmpty {
                         Text("No pitch data available")
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(ColorTheme.textSecondary)
                     } else {
                         Chart {
                             ForEach(player.pitchLogs.sorted(by: { $0.date < $1.date })) { log in
@@ -87,7 +88,7 @@ struct PlayerFormView: View {
                                     y: .value("Pitches", log.totalPitches)
                                 )
                                 .interpolationMethod(.monotone)
-                                .foregroundStyle(Color.blue)
+                                .foregroundStyle(ColorTheme.chartLine)
                                 .symbol(Circle())
                             }
                         }
@@ -101,6 +102,7 @@ struct PlayerFormView: View {
                     }
                 }
             }
+            .background(ColorTheme.background)
             .navigationTitle("Player Details")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -112,6 +114,7 @@ struct PlayerFormView: View {
                         }
                         dismiss()
                     }
+                    .foregroundColor(ColorTheme.secondary)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
@@ -124,6 +127,7 @@ struct PlayerFormView: View {
                         
                         dismiss()
                     }
+                    .foregroundColor(ColorTheme.primary)
                     .disabled(
                         firstName.trimmingCharacters(in: .whitespaces).isEmpty ||
                         lastName.trimmingCharacters(in: .whitespaces).isEmpty
@@ -131,5 +135,6 @@ struct PlayerFormView: View {
                 }
             }
         }
+        .background(ColorTheme.background)
     }
 }

@@ -23,15 +23,16 @@ struct PlayerListView: View {
                     VStack(alignment: .leading) {
                         Text("\(player.firstName) \(player.lastName)")
                             .font(.headline)
+                            .foregroundColor(ColorTheme.textPrimary)
 
                         if let daysLeft = daysUntilReady(for: player), daysLeft > 0 {
                             Text("🕒 Ready in \(daysLeft) day\(daysLeft > 1 ? "s" : "")")
                                 .font(.subheadline)
-                                .foregroundColor(.orange)
+                                .foregroundColor(ColorTheme.cooldown)
                         } else {
                             Text("✅ Ready")
                                 .font(.subheadline)
-                                .foregroundColor(.green)
+                                .foregroundColor(ColorTheme.ready)
                         }
                     }
                 }
@@ -39,6 +40,8 @@ struct PlayerListView: View {
             .onDelete(perform: deletePlayers)
 
         }
+        .listStyle(.plain)
+        .background(ColorTheme.background)
         .navigationTitle(team.name)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -56,6 +59,7 @@ struct PlayerListView: View {
                     isPresentingAddPlayer = true
                 } label: {
                     Label("Add Player", systemImage: "plus")
+                        .foregroundColor(ColorTheme.primary)
                 }
             }
         }

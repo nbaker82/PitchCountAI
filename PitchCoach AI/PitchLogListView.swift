@@ -17,10 +17,14 @@ struct PitchLogListView: View {
             ForEach(player.pitchLogs.sorted(by: { $0.date > $1.date })) { log in
                 VStack(alignment: .leading) {
                     Text("Date: \(log.date.formatted(date: .abbreviated, time: .omitted))")
+                        .foregroundColor(ColorTheme.textPrimary)
                     Text("Pitches: \(log.totalPitches)")
+                        .foregroundColor(ColorTheme.textSecondary)
                 }
             }
         }
+        .listStyle(.plain)
+        .background(ColorTheme.background)
         .navigationTitle(player.name)
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
@@ -28,6 +32,7 @@ struct PitchLogListView: View {
                     let log = PitchLog(totalPitches: 50, player: player)
                     player.pitchLogs.append(log)
                 }
+                .foregroundColor(ColorTheme.primary)
             }
         }
     }

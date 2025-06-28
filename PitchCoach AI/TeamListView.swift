@@ -23,15 +23,19 @@ struct TeamListView: View {
                     } label: {
                         Label {
                             Text(team.name)
+                                .foregroundColor(ColorTheme.textPrimary)
                         } icon: {
                             Text("\(team.players.count)")
                                 .frame(width: 24)
-                                .background(Circle().fill(Color.blue.opacity(0.2)))
+                                .background(Circle().fill(ColorTheme.primary.opacity(0.2)))
+                                .foregroundColor(ColorTheme.primary)
                         }
                     }
                 }
                 .onDelete(perform: deleteTeams)
             }
+            .listStyle(.plain)
+            .background(ColorTheme.background)
             .navigationTitle("Teams")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -41,6 +45,7 @@ struct TeamListView: View {
                         isPresentingAddTeam = true
                     } label: {
                         Label("Add Team", systemImage: "plus")
+                            .foregroundColor(ColorTheme.primary)
                     }
                 }
             }
@@ -50,6 +55,7 @@ struct TeamListView: View {
                 }
             }
         }
+        .background(ColorTheme.background)
     }
     
     private func deleteTeams(at offsets: IndexSet) {

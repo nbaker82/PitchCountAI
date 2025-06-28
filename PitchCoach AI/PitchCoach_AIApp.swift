@@ -13,6 +13,8 @@ struct PitchCoach_AIApp: App {
     var body: some Scene {
         WindowGroup {
             TeamListView()
+                .background(ColorTheme.background)
+                .preferredColorScheme(.light) // You can change this to .dark or .none based on your preference
         }
         .modelContainer(for: [Team.self, Player.self, PitchLog.self])
     }

@@ -19,6 +19,7 @@ struct TeamFormView: View {
                     .autocapitalization(.words)
             }
         }
+        .background(ColorTheme.background)
         .navigationTitle("Team Details")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
@@ -29,11 +30,13 @@ struct TeamFormView: View {
                     }
                     dismiss()
                 }
+                .foregroundColor(ColorTheme.secondary)
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Save") {
                     dismiss()
                 }
+                .foregroundColor(ColorTheme.primary)
                 .disabled(team.name.trimmingCharacters(in: .whitespaces).isEmpty)
             }
         }
